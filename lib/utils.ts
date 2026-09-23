@@ -9,7 +9,7 @@ export function formatCurrency(value: number, currency = "NGN"): string {
             maximumFractionDigits: 2,
         }).format(value);
     } catch {
-        return `₦${Number(value).toFixed(2)}`;
+        return value.toFixed(2);
     }
 }
 
