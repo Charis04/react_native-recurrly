@@ -8,7 +8,7 @@ export const tabs: AppTab[] = [
 ];
 
 export const HOME_USER = {
-    name: "Adrian | JS Mastery",
+    name: "Charis Adu",
 };
 
 export const HOME_BALANCE = {
@@ -21,7 +21,7 @@ export const UPCOMING_SUBSCRIPTIONS: UpcomingSubscription[] = [
         id: "spotify",
         icon: icons.spotify,
         name: "Spotify",
-        price: 5.99,
+        price: 2009,
         currency: "USD",
         daysLeft: 2,
     },
