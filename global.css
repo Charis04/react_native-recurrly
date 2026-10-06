@@ -295,6 +295,18 @@
         @apply rounded-2xl border border-border bg-background px-4 py-4 text-base font-sans-medium text-primary;
     }
 
+    .auth-input-wrap {
+        @apply flex-row items-center rounded-2xl border border-border bg-background;
+    }
+
+    .auth-input-grow {
+        @apply flex-1 border-0;
+    }
+
+    .auth-visibility {
+        @apply px-4;
+    }
+
     .auth-input-error {
         @apply border-destructive;
     }
@@ -303,8 +315,16 @@
         @apply text-xs font-sans-medium text-destructive;
     }
 
+    .auth-form-error {
+        @apply rounded-2xl bg-destructive/10 px-4 py-3 text-sm font-sans-medium text-destructive;
+    }
+
     .auth-helper {
         @apply text-sm font-sans-medium text-muted-foreground;
+    }
+
+    .auth-forgot-row {
+        @apply items-end;
     }
 
     .auth-button {
