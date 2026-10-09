@@ -8,6 +8,7 @@ export type AuthFieldErrors = {
   form?: string;
 };
 
+/** Returns an error for an empty or malformed trimmed email, or undefined when valid. */
 export function validateEmail(emailAddress: string): string | undefined {
   const email = emailAddress.trim().toLowerCase();
   if (!email) return "Enter your email address.";
@@ -15,23 +16,27 @@ export function validateEmail(emailAddress: string): string | undefined {
   return undefined;
 }
 
+/** Returns an error for a password shorter than eight characters, or undefined when valid. */
 export function validatePassword(password: string): string | undefined {
   if (!password) return "Enter your password.";
   if (password.length < 8) return "Use at least 8 characters.";
   return undefined;
 }
 
+/** Returns an error for an empty or mismatched confirmation, or undefined when it matches. */
 export function validatePasswordConfirmation(password: string, confirmation: string): string | undefined {
   if (!confirmation) return "Confirm your password.";
   if (password !== confirmation) return "Passwords do not match.";
   return undefined;
 }
 
+/** Returns an error unless the trimmed code contains exactly six digits; otherwise returns undefined. */
 export function validateCode(code: string): string | undefined {
   if (!/^\d{6}$/.test(code.trim())) return "Enter the 6-digit code.";
   return undefined;
 }
 
+/** Returns an error's longMessage, then message, falling back when neither is available. */
 export function getClerkErrorMessage(error: unknown, fallback: string): string {
   if (typeof error === "object" && error !== null) {
     const clerkError = error as { longMessage?: string; message?: string };

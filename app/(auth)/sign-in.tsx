@@ -7,6 +7,7 @@ import { Text, View } from "react-native";
 
 type VerificationMode = "device" | "mfa";
 
+/** Handles password sign-in, supported email verification, and session activation. */
 export default function SignIn() {
   const router = useRouter();
   const { setActive } = useClerk();

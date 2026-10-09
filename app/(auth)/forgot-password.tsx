@@ -7,6 +7,7 @@ import { Text, View } from "react-native";
 
 type ResetStage = "email" | "code" | "password";
 
+/** Renders the email, code verification, and new-password steps for password recovery. */
 export default function ForgotPassword() {
   const router = useRouter();
   const { signIn, errors, fetchStatus } = useSignIn();

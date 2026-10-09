@@ -15,6 +15,7 @@ import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
+/** Wraps auth content in a scrollable container that respects device safe areas. */
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
     <SafeAreaView className="auth-safe-area">
@@ -30,6 +31,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Renders the app branding with the supplied eyebrow, title, and subtitle. */
 export function AuthBrand({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
   return (
     <View className="auth-brand-block">
@@ -48,6 +50,7 @@ export function AuthBrand({ eyebrow, title, subtitle }: { eyebrow: string; title
   );
 }
 
+/** Renders a labeled text input with optional validation feedback. */
 export function AuthField({ label, error, ...props }: TextInputProps & { label: string; error?: string }) {
   return (
     <View className="auth-field">
@@ -62,6 +65,7 @@ export function AuthField({ label, error, ...props }: TextInputProps & { label: 
   );
 }
 
+/** Renders a password input with caller-controlled visibility and optional error feedback. */
 export function PasswordField({ label, error, visible, onToggle, ...props }: TextInputProps & { label: string; error?: string; visible: boolean; onToggle: () => void }) {
   return (
     <View className="auth-field">
@@ -82,6 +86,7 @@ export function PasswordField({ label, error, visible, onToggle, ...props }: Tex
   );
 }
 
+/** Renders an auth action button, disabling presses and showing a spinner while loading. */
 export function AuthButton({ label, onPress, loading, disabled }: { label: string; onPress: () => void; loading?: boolean; disabled?: boolean }) {
   return (
     <Pressable
@@ -95,10 +100,12 @@ export function AuthButton({ label, onPress, loading, disabled }: { label: strin
   );
 }
 
+/** Renders a form error when a nonempty message is provided; otherwise returns null. */
 export function AuthInlineError({ message }: { message?: string }) {
   return message ? <Text className="auth-form-error">{message}</Text> : null;
 }
 
+/** Renders a verification input that passes at most six digits to onChangeText. */
 export function AuthCodeField({ value, onChangeText, error }: { value: string; onChangeText: (value: string) => void; error?: string }) {
   return (
     <AuthField

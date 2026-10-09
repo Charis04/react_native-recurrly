@@ -13,6 +13,7 @@ if (!publishableKey) {
 
 SplashScreen.preventAutoHideAsync();
 
+/** Loads app fonts, dismisses the splash screen, and provides Clerk to the route stack. */
 export default function RootLayout() {
   	const [fontsLoaded] = useFonts({
 		"sans-regular": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),

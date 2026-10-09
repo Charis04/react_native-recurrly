@@ -19,6 +19,7 @@ import { Link, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 
+/** Handles account creation, email verification, and activation of the new session. */
 export default function SignUp() {
   const router = useRouter();
   const { setActive } = useClerk();
