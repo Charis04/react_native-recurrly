@@ -1,8 +1,33 @@
-# Welcome to your Expo app 👋
+# recurrly
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Subscription tracking for people who want a clearer view of recurring spending.
 
-## Get started
+## Authentication setup
+
+This app uses a custom email and password flow powered by Clerk. It supports account creation with email verification, sign-in, password recovery, email-code device verification, and email-code MFA.
+
+1. Create a Clerk application and enable:
+   - Sign-up with email and password
+   - Sign-in with email and password
+   - Email verification codes
+   - Email-code MFA or device trust if those features are enabled for your instance
+2. Copy the publishable key into `.env`:
+
+   ```env
+   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_key
+   ```
+
+   Use `.env.example` as the template. The local `.env` is ignored by git.
+3. Install dependencies and start Expo:
+
+   ```bash
+   npm install
+   npx expo start
+   ```
+
+The current custom UI intentionally supports email identifiers only. Phone/SMS authentication, social providers, TOTP, backup codes, and organization selection require additional dedicated screens and are not enabled by this implementation.
+
+## Development
 
 1. Install dependencies
 
@@ -25,7 +50,7 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+## Reset the starter project
 
 When you're ready, run:
 

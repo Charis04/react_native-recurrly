@@ -51,7 +51,9 @@
             "./assets/fonts/PlusJakartaSans-ExtraBold.ttf"
           ]
         }
-      ]
+      ],
+      "expo-secure-store",
+      "@clerk/expo"
     ],
     "experiments": {
       "typedRoutes": true,
