@@ -14,22 +14,20 @@ import {
     validatePassword,
     validatePasswordConfirmation,
 } from "@/lib/auth";
-import { useClerk, useSignUp } from "@clerk/expo";
+import { useSignUp } from "@clerk/expo";
 import { Link, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Text, View } from "react-native";
 
 /** Handles account creation, email verification, and activation of the new session. */
 export default function SignUp() {
   const router = useRouter();
-  const { setActive } = useClerk();
   const { signUp, errors, fetchStatus } = useSignUp();
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [code, setCode] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
-  const [verificationComplete, setVerificationComplete] = useState(false);
   const [isFinalizing, setIsFinalizing] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -37,17 +35,6 @@ export default function SignUp() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const isLoading = fetchStatus === "fetching" || isFinalizing;
 
-  useEffect(() => {
-    if (!verificationComplete || isFinalizing || signUp.status !== "complete" || !signUp.createdSessionId) return;
-
-    setIsFinalizing(true);
-    void setActive({ session: signUp.createdSessionId })
-      .then(() => router.replace("/"))
-      .catch((error: unknown) => {
-        setIsFinalizing(false);
-        setFormError(getClerkErrorMessage(error, "We could not finish setting up your account."));
-      });
-  }, [isFinalizing, router, setActive, signUp, signUp.createdSessionId, signUp.status, verificationComplete]);
 
   const handleSignUp = async () => {
     const nextErrors: Record<string, string> = {};
@@ -75,20 +62,67 @@ export default function SignUp() {
     setIsVerifying(true);
   };
 
-  const handleVerify = async () => {
-    const codeError = validateCode(code);
-    setFieldErrors(codeError ? { code: codeError } : {});
-    setFormError(undefined);
-    if (codeError) return;
+  
+const handleVerify = async () => {
+  const codeError = validateCode(code);
+  setFieldErrors(codeError ? { code: codeError } : {});
+  setFormError(undefined);
 
-    const { error } = await signUp.verifications.verifyEmailCode({ code });
-    if (error) {
-      setFormError(getClerkErrorMessage(error, "That code is not valid. Check it and try again."));
+  if (codeError) return;
+
+  // Verify only if this sign-up hasn't already completed verification.
+  if (signUp.status !== "complete") {
+    const { error } =
+      await signUp.verifications.verifyEmailCode({
+        code: code.trim(),
+      });
+
+    // A previous verification may already have succeeded.
+    // Continue if the sign-up is now complete.
+    if (error && signUp.status !== "complete") {
+      setFormError(
+        getClerkErrorMessage(
+          error,
+          "That code is not valid. Check it and try again."
+        )
+      );
       return;
     }
+  }
 
-    setVerificationComplete(true);
-  };
+  if (signUp.status !== "complete") {
+  console.log("Clerk sign-up status:", signUp.status);
+  console.log("Missing fields:", signUp.missingFields);
+  console.log("Unverified fields:", signUp.unverifiedFields);
+  console.log("Required fields:", signUp.requiredFields);
+
+  setFormError(
+    `Email verified, but sign-up status is ${signUp.status}. ` +
+      `Missing: ${signUp.missingFields.join(", ") || "none"}`
+  );
+
+  return;
+}
+
+  // Finalize the sign-up and activate the session.
+  setIsFinalizing(true);
+
+  const { error: finalizeError } = await signUp.finalize({
+    navigate: ({ decorateUrl }) =>
+      router.replace(decorateUrl("/")),
+  });
+
+  if (finalizeError) {
+    setIsFinalizing(false);
+    setFormError(
+      getClerkErrorMessage(
+        finalizeError,
+        "Your email was verified, but we could not finish setting up your account."
+      )
+    );
+  }
+};
+
 
   const resendCode = async () => {
     setFormError(undefined);
